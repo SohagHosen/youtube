@@ -1,97 +1,104 @@
 import AppBar from "@material-ui/core/AppBar";
 import InputBase from "@material-ui/core/InputBase";
-import { alpha, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import InvertColorsIcon from "@material-ui/icons/InvertColors";
 import SearchIcon from "@material-ui/icons/Search";
-import YouTubeIcon from "@material-ui/icons/YouTube";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  appbar: {
-    backgroundColor: theme.palette.secondary.dark,
-  },
-  toolbar: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  menuTitle: {
-    marginRight: theme.spacing(2),
-    width: "200px",
-  },
-  brandLink: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    textDecoration: "none",
-    color: "white",
-  },
-  youtubeIcon: {
-    fontSize: "2rem",
-  },
-  title: {
-    flexGrow: 1,
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+import darkLogo from "../../assets/logos/yt_logo_rgb_dark.png";
+import lightLogo from "../../assets/logos/yt_logo_rgb_light.png";
+import { AppContext } from "../App";
+export default function Appbar() {
+  const [state, dispatch] = useContext(AppContext);
+  const [darkTheme, setDarkTheme] = useState(true);
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
     },
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    logo: {
+      height: "20px",
     },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
+    appbar: {
+      backgroundColor: state.theme.palette.primary.main,
     },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 1),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 1),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(3)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
+    toolbar: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    menuTitle: {
+      marginRight: theme.spacing(2),
+      // width: "200px",
+    },
+    brandLink: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      textDecoration: "none",
+      color: "white",
+    },
+    title: {
+      flexGrow: 1,
+      display: "none",
+      [theme.breakpoints.up("sm")]: {
+        display: "block",
       },
     },
-  },
-}));
-
-export default function Appbar() {
+    search: {
+      position: "relative",
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: state.theme.palette.primary.light,
+      marginLeft: 0,
+      width: "100%",
+      maxWidth: "500px",
+      color: state.theme.palette.primary.contrastText,
+    },
+    searchIcon: {
+      padding: theme.spacing(0, 1),
+      height: "100%",
+      position: "absolute",
+      pointerEvents: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    inputRoot: {
+      color: "inherit",
+    },
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 1),
+      paddingLeft: `calc(1em + ${theme.spacing(3)}px)`,
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
+        width: "12ch",
+        "&:focus": {
+          width: "20ch",
+        },
+      },
+    },
+    themeHandler: {
+      marginLeft: "1rem",
+      color: darkTheme ? "white" : "black",
+    },
+  }));
   const classes = useStyles();
-
+  const handleTheme = () => {
+    setDarkTheme(!darkTheme);
+    dispatch({ type: "CHANGE_THEME", value: darkTheme });
+  };
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.appbar}>
+      <AppBar position="fixed" className={classes.appbar}>
         <Toolbar className={classes.toolbar}>
           <Typography className={classes.menuTitle} variant="h6">
             <Link to="/" className={classes.brandLink}>
-              <YouTubeIcon className={classes.youtubeIcon} />{" "}
-              <span>Youtube</span>
+              {darkTheme ? (
+                <img className={classes.logo} src={darkLogo} alt="" />
+              ) : (
+                <img className={classes.logo} src={lightLogo} alt="" />
+              )}
             </Link>
           </Typography>
 
@@ -108,6 +115,10 @@ export default function Appbar() {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
+          <InvertColorsIcon
+            className={classes.themeHandler}
+            onClick={handleTheme}
+          />
         </Toolbar>
       </AppBar>
     </div>
