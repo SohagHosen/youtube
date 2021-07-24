@@ -7,7 +7,6 @@ const RecomandedVideo = () => {
   const useStyles = makeStyles({
     root: {
       paddingTop: "80px",
-
       display: "flex",
       flexWrap: "wrap",
       justifyContent: "center",
@@ -15,7 +14,6 @@ const RecomandedVideo = () => {
     },
   });
   const classes = useStyles();
-  console.log(state.videos[0]);
   return (
     <Box className={classes.root}>
       {state.videos.map((item) => (

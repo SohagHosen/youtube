@@ -1,14 +1,29 @@
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, { createContext, useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { recomandedVideoApi } from "../api/api";
 import { initialState, reducer } from "../state/state";
 import "./App.css";
-import Appbar from "./appbar/Appbar";
+import AppBar from "./appbar/Appbar";
 import RecomandedVideos from './recomandedVideos/RecmandedVideos';
 import VideoDetails from "./videoDetails/VideoDetails";
+
 export const AppContext = createContext();
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    justifyContent:"center",
+    alignItems:"center",
+    width:"100%",
+    height:"100vh"
+    
+  },
+}));
 function App() {
+  const classes = useStyles();
+
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(()=>{
   recomandedVideoApi().then((result) => {
@@ -20,9 +35,17 @@ function App() {
     <AppContext.Provider value={[state, dispatch]}>
       <ThemeProvider theme={state.theme}>
         <Router>
-          <Appbar />
-          <Route exact path="/" component={RecomandedVideos}/>
-          <Route exact path="/watch/:id" component={VideoDetails} />
+          {state.videos.length > 0 ? (
+            <>
+              <AppBar />
+              <Route exact path="/" component={RecomandedVideos} />
+              <Route exact path="/watch/:id" component={VideoDetails} />
+            </>
+          ) : (
+            <div className={classes.root}>
+              <CircularProgress />
+            </div>
+          )}
         </Router>
       </ThemeProvider>
     </AppContext.Provider>

@@ -49,22 +49,21 @@ const RelatedVideos = ({ videoId }) => {
             className={classes.root}
           >
             <Grid container spacing={2}>
-              <Grid container item md={4}>
+              <Grid container item xs={12} sm={4} md={4}>
                 <img
                   className={classes.relatedVideoThumbnail}
                   src={
-                    item && item.snippet && item.snippet.thumbnails.default.url
+                    item && item.snippet && item.snippet.thumbnails.medium.url
                   }
                   alt=""
                 />
               </Grid>
-              <Grid container direction="column" item md={8}>
+              <Grid container direction="column" item xs={12} sm={8} md={8}>
                 <Typography
                   noWrap
                   className={classes.videoTitle}
                   gutterBottom
                   component="h6"
-                  noWrap
                 >
                   {item.snippet && item.snippet.title}
                 </Typography>

@@ -15,10 +15,13 @@ export default function VideoCards({ value }) {
   const [state] = useContext(AppContext);
   const useStyles = makeStyles({
     root: {
-      width: 320,
+      width: 300,
       margin: "1rem",
       position: "relative",
       backgroundColor: state.theme.palette.primary.light,
+    },
+    cardLink: {
+      textDecoration: "none",
       color: state.theme.palette.primary.contrastText,
     },
     media: {
@@ -53,7 +56,7 @@ export default function VideoCards({ value }) {
 
   return (
     <Card className={classes.root}>
-      <Link to={`/watch/${value.id}`}>
+      <Link className={classes.cardLink} to={`/watch/${value.id}`}>
         <CardActionArea>
           <div>
             <img
