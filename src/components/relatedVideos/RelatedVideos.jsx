@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { relatedVideoApi } from "../../api/api";
 import { AppContext } from "../App";
 const RelatedVideos = ({ videoId }) => {
-  console.log(videoId);
   const [videos, setVideos] = useState([]);
   useEffect(() => {
     relatedVideoApi(videoId).then((result) => setVideos(result));
@@ -40,7 +39,6 @@ const RelatedVideos = ({ videoId }) => {
     },
   }));
   const classes = useStyles();
-  console.log(videos);
   return (
     <>
       {videos &&

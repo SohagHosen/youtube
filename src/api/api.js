@@ -21,3 +21,18 @@ export const relatedVideoApi = (videoId)=>{
       return newArray;
     });
 }
+export const videoInfo = (videoId)=>{
+  return fetch(
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}&key=${KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => data.items[0]);
+  }
+
+export const channelInfo = (channelId) => {
+  return fetch(
+    `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelId}&key=${KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => data.items[0]);
+};
