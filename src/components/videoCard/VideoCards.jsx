@@ -1,7 +1,4 @@
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
+import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -13,30 +10,49 @@ import { AppContext } from "../App";
 
 export default function VideoCards({ value }) {
   const [state] = useContext(AppContext);
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     root: {
       width: 300,
       margin: "1rem",
       position: "relative",
-      backgroundColor: state.theme.palette.primary.light,
+      [theme.breakpoints.down("xs")]: {
+        width: "100%",
+      },
     },
     cardLink: {
       textDecoration: "none",
       color: state.theme.palette.primary.contrastText,
     },
     media: {
-      height: 180,
+      height: "auto",
+      width: "100%",
+      display: "block",
+    },
+    imgContainer: {
+      position: "relative",
     },
     duration: {
       position: "absolute",
-      top: "155px",
       right: "10px",
+      bottom: "10px",
+
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       color: "white",
       padding: "2px 5px",
+      [theme.breakpoints.down("xs")]: {
+        // bottom: "50vh",
+      },
     },
     channelName: {
       fontSize: "0.9rem",
+    },
+    videoTitle: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      display: "-webkit-box",
+      "-webkit-line-clamp": 2,
+      "-webkit-box-orient": "vertical",
+      padding: ".5rem",
     },
     videoInfo: {
       fontSize: "0.8rem",
@@ -44,12 +60,13 @@ export default function VideoCards({ value }) {
     videoDetails: {
       display: "block",
       color: state.theme.palette.primary.gray,
+      padding: ".5rem",
     },
     dot: {
       fontSize: ".4rem",
       margin: "0px 5px",
     },
-  });
+  }));
   const classes = useStyles();
   const seconds = moment
     .duration(value.contentDetails && value.contentDetails.duration)
@@ -58,10 +75,10 @@ export default function VideoCards({ value }) {
   return (
     <>
       {value.snippet && (
-        <Card className={classes.root}>
+        <Box className={classes.root}>
           <Link className={classes.cardLink} to={`/watch/${value.id}`}>
-            <CardActionArea>
-              <div>
+            <Box>
+              <div className={classes.imgContainer}>
                 <img
                   className={classes.media}
                   src={value.snippet.thumbnails.medium.url}
@@ -71,19 +88,16 @@ export default function VideoCards({ value }) {
                   <span className={classes.duration}>{_duration}</span>
                 )}
               </div>
-              <CardContent>
-                <Typography
-                  noWrap
-                  className={classes.videoTitle}
-                  gutterBottom
-                  component="h6"
-                >
-                  {value.snippet.title}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+              <Typography
+                className={classes.videoTitle}
+                gutterBottom
+                component="h6"
+              >
+                {value.snippet.title}
+              </Typography>
+            </Box>
           </Link>
-          <CardActions className={classes.videoDetails}>
+          <Box className={classes.videoDetails}>
             <Typography className={classes.channelName}>
               {value.snippet.channelTitle}
             </Typography>
@@ -97,8 +111,8 @@ export default function VideoCards({ value }) {
 
               {moment(value.snippet.publishedAt).fromNow()}
             </Typography>
-          </CardActions>
-        </Card>
+          </Box>
+        </Box>
       )}
     </>
   );
