@@ -52,7 +52,6 @@ export default function Appbar() {
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      // backgroundColor: state.theme.palette.primary.light,
       marginLeft: 0,
       width: "100%",
       maxWidth: "500px",
@@ -79,6 +78,7 @@ export default function Appbar() {
         width: "90%",
         "&:focus": {
           width: "100%",
+          outline: "none",
         },
       },
     },
@@ -99,8 +99,9 @@ export default function Appbar() {
   const handleSubmit = (event) => {
     event.preventDefault();
     searchVideos(search).then((result) => {
-      dispatch({ type: "SEARCHING_VIDEOS", value: [...result.items] });
+      dispatch({ type: "SEARCHING_VIDEOS", value: [...result] });
       history.push("/search");
+      // console.log(result.items);
     });
   };
   if (!search) {

@@ -41,5 +41,13 @@ export const searchVideos = (searchKeyWord) => {
     `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${searchKeyWord}&key=${KEY}`
   )
     .then((response) => response.json())
-    .then((data) => data);
+    .then((data) => {
+      let searchResult = [];
+      searchResult = data.items.filter((item) => {
+        if (item.id.videoId) {
+          return item;
+        }
+      });
+      return searchResult;
+    });
 };
