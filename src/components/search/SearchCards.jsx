@@ -20,6 +20,12 @@ const SearchCards = ({ data }) => {
       textDecoration: "none",
       color: state.theme.palette.primary.contrastText,
     },
+    channelName: {
+      color: state.theme.palette.primary.gray,
+    },
+    videoInfo: {
+      color: state.theme.palette.primary.gray,
+    },
   }));
   const classes = useStyles();
   return (
@@ -46,7 +52,6 @@ const SearchCards = ({ data }) => {
               <Grid container item xs={12} sm={7}>
                 <Box>
                   <Typography
-                    wrap
                     className={classes.videoTitle}
                     gutterBottom
                     component="h6"
@@ -57,8 +62,6 @@ const SearchCards = ({ data }) => {
                     {data.snippet.channelTitle}
                   </Typography>
                   <Typography className={classes.videoInfo}>
-                    {/* {numeral(data.viewCount).format("0.a")} views
-                <FiberManualRecord className={classes.dot} /> */}
                     {moment(data.snippet.publishedAt).fromNow()}
                   </Typography>
                 </Box>

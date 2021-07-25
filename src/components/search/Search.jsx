@@ -10,14 +10,19 @@ const Search = () => {
       paddingTop: "1rem",
       color: state.theme.palette.primary.contrastText,
       backgroundColor: state.theme.palette.primary.dark,
+      [theme.breakpoints.down("xs")]: {
+        marginTop: "3rem",
+        paddingTop: "2rem",
+      },
     },
   }));
-  console.log(state.searchResults[0]);
   const classes = useStyles();
   return (
     <div className={classes.root}>
       {state.searchResults.length &&
-        state.searchResults.map((item) => <SearchCards data={item} />)}
+        state.searchResults.map((item, index) => (
+          <SearchCards key={index} data={item} />
+        ))}
     </div>
   );
 };

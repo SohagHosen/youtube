@@ -103,6 +103,9 @@ export default function Appbar() {
       history.push("/search");
     });
   };
+  if (!search) {
+    history.push("/");
+  }
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.appbar}>
