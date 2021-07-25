@@ -26,6 +26,9 @@ const VideoDetails = () => {
       padding: "1rem",
       overflow: "hidden",
       backgroundColor: state.theme.palette.primary.dark,
+      [theme.breakpoints.down("xs")]: {
+        marginTop: "50px",
+      },
     },
     videoSection: {
       width: "97%",
@@ -49,6 +52,9 @@ const VideoDetails = () => {
       color: state.theme.palette.primary.contrastText,
       width: "100%",
       fontSize: "1.5rem",
+      [theme.breakpoints.down("xs")]: {
+        fontSize: "1rem",
+      },
     },
     videoInfo: {
       color: state.theme.palette.primary.gray,
@@ -134,10 +140,9 @@ const VideoDetails = () => {
       channelInfo(video.snippet.channelId).then((result) => setChannel(result));
     }
   }, [video]);
-  console.log(video);
   return (
     <>
-      {video.snippet && channel.snippet ? (
+      {video || (video.snippet && channel.snippet) ? (
         <Grid
           className={classes.root}
           container

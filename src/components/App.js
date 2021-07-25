@@ -5,9 +5,9 @@ import React, { createContext, useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { recomandedVideoApi } from "../api/api";
 import { initialState, reducer } from "../state/state";
-import "./App.css";
 import AppBar from "./appbar/Appbar";
 import RecomandedVideos from './recomandedVideos/RecmandedVideos';
+import Search from "./search/Search";
 import VideoDetails from "./videoDetails/VideoDetails";
 
 export const AppContext = createContext();
@@ -40,6 +40,7 @@ function App() {
               <AppBar />
               <Route exact path="/" component={RecomandedVideos} />
               <Route exact path="/watch/:id" component={VideoDetails} />
+              <Route exact path="/search" component={Search} />
             </>
           ) : (
             <div className={classes.root}>

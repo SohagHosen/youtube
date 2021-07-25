@@ -1,16 +1,19 @@
 import AppBar from "@material-ui/core/AppBar";
-import InputBase from "@material-ui/core/InputBase";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import InvertColorsIcon from "@material-ui/icons/InvertColors";
 import SearchIcon from "@material-ui/icons/Search";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { searchVideos } from "../../api/api";
 import darkLogo from "../../assets/logos/yt_logo_rgb_dark.png";
 import lightLogo from "../../assets/logos/yt_logo_rgb_light.png";
 import { AppContext } from "../App";
+
 export default function Appbar() {
+  let history = useHistory();
+
   const [state, dispatch] = useContext(AppContext);
   const [darkTheme, setDarkTheme] = useState(true);
   const useStyles = makeStyles((theme) => ({
@@ -49,7 +52,7 @@ export default function Appbar() {
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: state.theme.palette.primary.light,
+      // backgroundColor: state.theme.palette.primary.light,
       marginLeft: 0,
       width: "100%",
       maxWidth: "500px",
@@ -65,17 +68,17 @@ export default function Appbar() {
       justifyContent: "center",
     },
     inputRoot: {
-      color: "inherit",
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 1),
-      paddingLeft: `calc(1em + ${theme.spacing(3)}px)`,
-      transition: theme.transitions.create("width"),
       width: "100%",
+      padding: theme.spacing(1, 1, 1, 5),
+      border: "none",
+      color: state.theme.palette.primary.gray,
+
+      transition: theme.transitions.create("width"),
+      backgroundColor: state.theme.palette.primary.light,
       [theme.breakpoints.up("sm")]: {
-        width: "12ch",
+        width: "90%",
         "&:focus": {
-          width: "20ch",
+          width: "100%",
         },
       },
     },
@@ -88,6 +91,17 @@ export default function Appbar() {
   const handleTheme = () => {
     setDarkTheme(!darkTheme);
     dispatch({ type: "CHANGE_THEME", value: darkTheme });
+  };
+  const [search, setSearch] = useState("");
+  const handleChange = (event) => {
+    setSearch(event.target.value);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    searchVideos(search).then((result) => {
+      dispatch({ type: "SEARCHING_VIDEOS", value: [...result.items] });
+      history.push("/search");
+    });
   };
   return (
     <div className={classes.root}>
@@ -104,17 +118,18 @@ export default function Appbar() {
           </Typography>
 
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
+            <form action="" onSubmit={handleSubmit}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <input
+                type="search"
+                className={classes.inputRoot}
+                value={search}
+                onChange={handleChange}
+                placeholder="Search..."
+              />
+            </form>
           </div>
           <InvertColorsIcon
             className={classes.themeHandler}

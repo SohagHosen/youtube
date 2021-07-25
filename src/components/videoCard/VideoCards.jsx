@@ -51,43 +51,55 @@ export default function VideoCards({ value }) {
     },
   });
   const classes = useStyles();
-  const seconds = moment.duration(value.contentDetails.duration).asSeconds();
+  const seconds = moment
+    .duration(value.contentDetails && value.contentDetails.duration)
+    .asSeconds();
   const _duration = moment.utc(seconds * 1000).format("mm:ss");
-
   return (
-    <Card className={classes.root}>
-      <Link className={classes.cardLink} to={`/watch/${value.id}`}>
-        <CardActionArea>
-          <div>
-            <img
-              className={classes.media}
-              src={value.snippet.thumbnails.medium.url}
-              alt="..."
-            />
-            <span className={classes.duration}>{_duration}</span>
-          </div>
-          <CardContent>
-            <Typography
-              noWrap
-              className={classes.videoTitle}
-              gutterBottom
-              component="h6"
-            >
-              {value.snippet.title}
+    <>
+      {value.snippet && (
+        <Card className={classes.root}>
+          <Link className={classes.cardLink} to={`/watch/${value.id}`}>
+            <CardActionArea>
+              <div>
+                <img
+                  className={classes.media}
+                  src={value.snippet.thumbnails.medium.url}
+                  alt="..."
+                />
+                {value.contentDetails && (
+                  <span className={classes.duration}>{_duration}</span>
+                )}
+              </div>
+              <CardContent>
+                <Typography
+                  noWrap
+                  className={classes.videoTitle}
+                  gutterBottom
+                  component="h6"
+                >
+                  {value.snippet.title}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Link>
+          <CardActions className={classes.videoDetails}>
+            <Typography className={classes.channelName}>
+              {value.snippet.channelTitle}
             </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Link>
-      <CardActions className={classes.videoDetails}>
-        <Typography className={classes.channelName}>
-          {value.snippet.channelTitle}
-        </Typography>
-        <Typography className={classes.videoInfo}>
-          {numeral(value.statistics.viewCount).format("0.a")} views
-          <FiberManualRecordIcon className={classes.dot} />
-          {moment(value.snippet.publishedAt).fromNow()}
-        </Typography>
-      </CardActions>
-    </Card>
+            <Typography className={classes.videoInfo}>
+              {value.statistics && (
+                <>
+                  {numeral(value.statistics.viewCount).format("0.a")} views
+                  <FiberManualRecordIcon className={classes.dot} />
+                </>
+              )}
+
+              {moment(value.snippet.publishedAt).fromNow()}
+            </Typography>
+          </CardActions>
+        </Card>
+      )}
+    </>
   );
 }

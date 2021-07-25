@@ -25,6 +25,7 @@ const lightTheme = createTheme({
 });
 export const initialState = {
   videos: [],
+  searchResults:[],
   theme:  darkTheme ,
 };
 
@@ -33,11 +34,13 @@ export const reducer = (state, action) => {
     case "FATCHING_VIDOES":
       return { ...state, videos: [...action.value] };
     case "CHANGE_THEME":
-      if(action.value){
+      if (action.value) {
         return { ...state, theme: lightTheme };
-      }else{
+      } else {
         return { ...state, theme: darkTheme };
       }
+    case "SEARCHING_VIDEOS":
+      return { ...state, searchResults: [...action.value] };
     default:
       return state;
   }
