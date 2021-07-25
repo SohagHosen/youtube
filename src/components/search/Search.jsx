@@ -22,7 +22,7 @@ const Search = () => {
     },
     searchContainer: {
       backgroundColor: state.theme.palette.primary.dark,
-      height: "calc(100vh - 48px)",
+      height: state.searchResults.length ? "" : "calc(100vh - 48px)",
       width: "100%",
     },
   }));
